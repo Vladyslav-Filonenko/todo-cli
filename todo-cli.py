@@ -70,6 +70,5 @@ def del_task():
     del number
 
 
-
 if __name__ == "__main__":
     main()
