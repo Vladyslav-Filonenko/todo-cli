@@ -4,17 +4,22 @@ TEXT = "Что вы хотите сделать?\n1. Добавить задач
 
 
 def main():
-    action = int(input(TEXT))
+    action = None
     while action != 0:
-        if action == 1:
-            add_task()
-        elif action == 2:
-            all_tasks()
-        elif action == 3:
-            check_task()
-        elif action == 4:
-            del_task()
-        action = int(input(TEXT))
+        try:
+            if action == 1:
+                add_task()
+            elif action == 2:
+                all_tasks()
+            elif action == 3:
+                check_task()
+            elif action == 4:
+                del_task()
+            action = int(input(TEXT))
+        except ValueError:
+            print("Нужно ввести цифру от 1 до 4")
+        except IndexError:
+            print("Вы можете ввести цифрцы от 1 до 4 включительно, не более и не менее")
 
 
 def load_tasks():
@@ -32,13 +37,11 @@ def save_tasks(tasks):
 
 def add_task():
     lst = load_tasks()
-    id_list = lst[-1]["id"]
+    id_list = lst[-1]["id"] if lst else 0
     for _ in range(int(input("Сколько задач вы хотите записать: "))):
         id_list += 1
         lst.append({"id": id_list, "task": input("Введите задачу: "), "done": False})
     save_tasks(lst)
-    del lst
-    del id_list
 
 
 def all_tasks():
@@ -48,8 +51,6 @@ def all_tasks():
         print(
             f'{temp["id"]}: {temp["task"]} - {"Выполнено" if temp["done"] else "Не выполнено"}'
         )
-    del lst
-    del temp
 
 
 def check_task():
@@ -57,8 +58,6 @@ def check_task():
     number = int(input("Введите номер задачи которую хотите выполнить: ")) - 1
     lst[number]["done"] = True
     save_tasks(lst)
-    del lst
-    del number
 
 
 def del_task():
@@ -66,8 +65,6 @@ def del_task():
     number = int(input("Введите номер задачи которую хотите удалить: ")) - 1
     del lst[number]
     save_tasks(lst)
-    del lst
-    del number
 
 
 if __name__ == "__main__":
